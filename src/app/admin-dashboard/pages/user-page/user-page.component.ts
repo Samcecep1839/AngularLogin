@@ -1,23 +1,33 @@
-import { Component, inject } from '@angular/core';
-import { UserTableComponent } from '../../../users/components/user-table/user-table.component';
+import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import { UserService } from '../../../users/services/user.service';
+import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 @Component({
   selector: 'app-user-page',
-  imports: [UserTableComponent],
+  imports: [UserDetailComponent],
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent {
 
-  userservice = inject(UserService);
+  id = input.required<string>();
+  userService = inject(UserService);
+  router = inject(Router);
+
+  userId = linkedSignal(this.id);
 
   userResource = rxResource({
-    request: () => ({}),
-    loader: () => {
-      return this.userservice.getUsers();
+    request: () => ({ id: this.userId() }),
+    loader: ({ request }) => {
+      return this.userService.getUser(request.id);
     },
   });
 
+  rediRecEffect = effect(() => {
+    if (this.userResource.error()) {
+      this.router.navigate(['/dashboard/users']);
+    }
+  });
 }
