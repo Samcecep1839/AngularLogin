@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Montserrat+Alternates&display=swap');
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: 
-  cyberpunk --default, dark --prefersdark;
+  dark --default, dark --prefersdark;
+}
+@theme {
+  --font-montserrat: "Montserrat Alternates", sans-serif;
 }
