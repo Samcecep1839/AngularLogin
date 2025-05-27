@@ -10,8 +10,7 @@ import { RouterLink } from '@angular/router';
 export class PaginationComponent {
 
   pages = input(0);
-  itemsPerPage = signal(4);
-  limit = input<number>();
+  itemsPerPage = signal(5);
   currentPage = input<number>(1);
   activePage = linkedSignal<number>(this.currentPage);
 

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,5 +10,10 @@ import { RouterLink } from '@angular/router';
 export class UserTableComponent {
 
   users = input.required<any>();
+  deleted = output<string>();
+
+  emitDeleted(id: string){
+    this.deleted.emit(id);
+  }
 
 }

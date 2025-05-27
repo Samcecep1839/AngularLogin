@@ -32,11 +32,12 @@
                 </td>
                 <td>{{ user.telephone }}</td>
                 <th>
-                    <button class="btn btn-ghost btn-xs">delete</button>
-                    <a class="btn btn-info btn-xs" 
+                    <button class="btn btn-error btn-xs rounded-full py-4 me-3" (click)="emitDeleted(user.id)">
+                        <i class="bi bi-trash text-lg"></i>
+                    </button>
+                    <a class="btn btn-info btn-xs rounded-full py-4" 
                     [routerLink]="['/dashboard/users/', user.id]">
-                    <i class="bi bi-pen-fill"></i>
-                    edit</a>
+                    <i class="bi bi-pencil-square text-lg"></i></a>
                 </th>
             </tr>
             }

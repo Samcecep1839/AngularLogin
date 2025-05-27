@@ -28,18 +28,19 @@ export interface User {
     createdAt:  Date;
     updatedAt:  Date;
     Role:       Role;
+    auth?:       boolean;
+    role_id?:   string;
 }
 
-export interface Role {
-    id:   string;
-    name: string;
+export interface DataRoles {
+  totalItems: number;
+  roles: Role[];
 }
-
 
 export interface RolesResponse {
-    success: boolean;
-    message: string;
-    data:    Role[];
+  success: boolean;
+  message: string;
+  data: DataRoles;
 }
 
 export interface Role {
