@@ -4,11 +4,14 @@ import { environment } from "../../../environments/environment.development";
 const baseUrl = environment.apiURL;
 
 @Pipe({
-    name:'userImage',
+    name: 'userImage',
 })
 export class UserImagePipe implements PipeTransform {
 
-    transform(value: string):string {
+    transform(value: string): string {
+        if (value === 'new') {
+            return `./assets/images/avatar/avatar-user.png`;
+        }
         return `${baseUrl}/users/avatar/${value}`;
     }
 }

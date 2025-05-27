@@ -24,19 +24,7 @@ export interface User {
     email:      string;
     telephone:  string;
     avatar:     string;
-    password:   string;
-    createdAt:  Date;
-    updatedAt:  Date;
-    Role:       Role;
-}
-export interface UserCreated {
-    id:         string;
-    first_name: string;
-    last_name:  string;
-    email:      string;
-    telephone:  string;
-    avatar:     string;
-    password:   string;
+    password?:   string;
     createdAt:  Date;
     updatedAt:  Date;
     Role:       Role;

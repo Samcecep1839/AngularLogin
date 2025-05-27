@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from '../../shared/services/base-http.service';
 import { Observable, of } from 'rxjs';
-import { Role, RolesResponse, UserCreated, UserResponse, UsersResponse } from '../interfaces/user.interface';
+import { Role, RolesResponse,  User,  UserResponse, UsersResponse } from '../interfaces/user.interface';
 
-const emptyUser: UserCreated = {
+interface Options{
+  limit?: number,
+  page?: number,
+}
+
+const emptyUser: User = {
   id: 'new',
   first_name: '',
   last_name: '',
@@ -21,8 +26,9 @@ const emptyUser: UserCreated = {
 })
 export class UserService extends BaseHttpService {
 
-  getUsers(): Observable<UsersResponse>{
-    return this.http.get<UsersResponse>(`${this.apiUrl}/users`);
+  getUsers(options: Options): Observable<UsersResponse>{
+    const { limit = 4, page = 0 } = options;
+    return this.http.get<UsersResponse>(`${this.apiUrl}/users`, {params:{limit,page}});
   }
   
     getUser(id: string): Observable<UserResponse>{
@@ -47,4 +53,10 @@ export class UserService extends BaseHttpService {
   update(id: string, data:any):Observable<any>{
     return this.http.patch(`${this.apiUrl}/users/${id}`, data);
   }
+
+  uploadAvatar(id: string, image: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('avatar', image);
+    return this.http.put<string>(`${this.apiUrl}/users/avatar/${id}`, formData);
+}
 }

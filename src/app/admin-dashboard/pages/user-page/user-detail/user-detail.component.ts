@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { User, UserCreated } from '../../../../users/interfaces/user.interface';
+import { User, } from '../../../../users/interfaces/user.interface';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../users/services/user.service';
@@ -10,15 +10,18 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'user-detail',
-  imports: [ReactiveFormsModule,UserImagePipe,NgOptimizedImage],
+  imports: [ReactiveFormsModule, UserImagePipe, NgOptimizedImage],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css'
 })
 export class UserDetailComponent {
 
-  user = input.required<UserCreated>();
+  user = input.required<User>();
   router = inject(Router);
   fb = inject(FormBuilder);
+  previewIMG = false;
+  previewURl: string | null = null;
+  avatarFile: File | null = null;
 
   UserService = inject(UserService);
 
@@ -28,7 +31,7 @@ export class UserDetailComponent {
     email: ['', [Validators.required, Validators.email]],
     telephone: ['', Validators.required],
     role_id: ['', Validators.required],
-    password:[''],
+    password: [''],
     avatar: [''],
   });
 
@@ -52,36 +55,77 @@ export class UserDetailComponent {
     },
   });
 
-onSubmit() {
-  const isValid = this.userForm.valid;
-  this.userForm.markAllAsTouched();
+  onSubmit() {
+    const isValid = this.userForm.valid;
+    this.userForm.markAllAsTouched();
 
-  if (!isValid) return;
 
-  const formValue = this.userForm.value;
+    if (!isValid) return;
 
-  if (this.user().id === 'new') {
+    const formValue = this.userForm.value;
+
+   if (this.user().id === 'new') {
     this.UserService.created(formValue).subscribe((resp) => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Product created',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      this.router.navigate(['/dashboard/users', resp.data.id]);
+        if (this.avatarFile) {
+            this.UserService.uploadAvatar(
+                resp.data.id,
+                this.avatarFile
+            ).subscribe(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Product created',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                this.router.navigate(['/dashboard/users', resp.data.id]);
+            });
+        }
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Product created',
+            showConfirmButton: false,
+            timer: 1500,
+        });
+        this.router.navigate(['/dashboard/users', resp.data.id]);
     });
-  } else {
-    this.UserService.update(this.user().id, formValue).subscribe((resp) => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'User Updated',
-        showConfirmButton: false,
-        timer: 1500,
+    } else {
+      this.UserService.update(this.user().id, formValue).subscribe((resp) => {
+
+        if (this.avatarFile) {
+          this.UserService.uploadAvatar(
+            this.user().id,
+            this.avatarFile
+          ).subscribe(() => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Product Updated',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+        }
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Product Updated',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
-    });
+    }
   }
-}
+
+
+  onFilesChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files;
+    if (file && file.length > 0) {
+      this.previewIMG = true;
+      this.previewURl = URL.createObjectURL(file[0]);
+      this.avatarFile = file[0];
+    }
+  }
 
 }
