@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '../../shared/services/base-http.service';
 import { catchError, map, Observable, of } from 'rxjs';
+import {rxResource} from '@angular/core/rxjs-interop';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
 @Injectable({
@@ -11,6 +12,10 @@ export class AuthService extends BaseHttpService {
   private _authStatus = signal<AuthStatus>('checking');
   private _user = signal<any>(null);
   private _token = signal<String | null>(localStorage.getItem('token'));
+
+  checkStatusResource = rxResource({
+    loader: () => this.checkStatus()
+  });
 
   authStatus = computed(() => {
     if (this._authStatus() === 'checking') return 'checking';
@@ -50,7 +55,6 @@ export class AuthService extends BaseHttpService {
     );
   }
 
-
   logout(): void {
     this._user.set('');
     this._token.set('');
@@ -73,8 +77,5 @@ export class AuthService extends BaseHttpService {
     return of(false);
   }
 
-
-
-
-
 }
+

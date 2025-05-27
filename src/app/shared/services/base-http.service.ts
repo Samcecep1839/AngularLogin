@@ -8,5 +8,5 @@ import { environment } from '../../../environments/environment.development';
 })
 export class BaseHttpService {
   protected http = inject(HttpClient);
-  protected apiUrl = environment.apiUrl;
+  protected apiUrl = environment.apiURL;
 }
