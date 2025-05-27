@@ -3,6 +3,13 @@
 </div>
 <div class=" divider divider-secondary"></div>
 
+<div class="flex gap-2 items-center h-20">
+    <div class="flex flex-1"></div>
+    <button class="btn btn-secondary" routerLink="'/dashboard/users/new'">
+        <i class="bi bi-plus-circle"></i> New user
+    </button>
+</div>
+
 @if (userResource.isLoading()) {
 <div class="flex justify-center items-center h-screen">
     <span class="loading loading-spinner loading-lg"></span>

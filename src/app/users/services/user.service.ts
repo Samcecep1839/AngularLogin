@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from '../../shared/services/base-http.service';
 import { Observable, of } from 'rxjs';
-import { RolesResponse, User, UserResponse, UsersResponse } from '../interfaces/user.interface';
+import { Role, RolesResponse, UserCreated, UserResponse, UsersResponse } from '../interfaces/user.interface';
 
-const emptyUser: UserResponse = {
-   success: false,
-    message: '',
-    data:   {} as User,
+const emptyUser: UserCreated = {
+  id: 'new',
+  first_name: '',
+  last_name: '',
+  email: '',
+  telephone: '',
+  avatar: 'avatar-user.png',
+  password: '',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  Role: {} as Role
 };
 
 @Injectable({
@@ -19,7 +26,13 @@ export class UserService extends BaseHttpService {
   }
   
     getUser(id: string): Observable<UserResponse>{
-      if(id === 'new') return of(emptyUser); 
+      if(id === 'new')
+        return of({
+          success: false,
+          message: '',
+          data: emptyUser,
+        }); 
+
       return this.http.get<UserResponse>(`${this.apiUrl}/users/${id}`);
   }
 
@@ -31,7 +44,7 @@ export class UserService extends BaseHttpService {
     return this.http.post(`${this.apiUrl}/users`, data);
   }
 
-  Update(id: string, data:any):Observable<any>{
-    return this.http.put(`${this.apiUrl}/users/${id}`, data);
+  update(id: string, data:any):Observable<any>{
+    return this.http.patch(`${this.apiUrl}/users/${id}`, data);
   }
 }
