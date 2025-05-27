@@ -10,7 +10,7 @@ const router = inject(Router);
 
 const isAuthenticated = await firstValueFrom(authService.checkStatus());
 
-if (!isAuthenticated) {
+if (isAuthenticated) {
   router.navigateByUrl('dashboard');
   return false;
 }
