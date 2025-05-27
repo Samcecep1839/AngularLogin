@@ -4,7 +4,7 @@
 @plugin "daisyui" {
   themes:
 
-    synthwave --default, dark --prefersdark;
+    business --default, dark --prefersdark;
 }
 
 @theme {

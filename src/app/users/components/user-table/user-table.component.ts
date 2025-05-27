@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { User } from '@users/interfaces/user.interface';
 
 @Component({
   selector: 'user-table',
@@ -9,7 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class UserTableComponent {
 
-  users = input.required<any>();
+  users = input.required<User[]>();
   deleted = output<string>();
 
   emitDeleted(id: string){

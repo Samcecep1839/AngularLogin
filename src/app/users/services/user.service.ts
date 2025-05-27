@@ -1,15 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { BaseHttpService } from '../../shared/services/base-http.service';
+import { BaseHttpService } from '@shared/services/base-http.service';
 import { Observable, of, tap } from 'rxjs';
-import { Role, RolesResponse, User, UserResponse, UsersResponse } from '../interfaces/user.interface';
-import { AuthService } from '../../auth/services/auth.service';
+import {  User, UserResponse, UsersResponse } from '../interfaces/user.interface';
+import { AuthService } from '@auth/services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Role } from '@roles/interfaces/role.interface';
+import { Options } from '@shared/interfaces/shared.interfaces';
 
-interface Options {
-  limit?: number,
-  page?: number,
-}
+
 
 const emptyUser: User = {
   id: 'new',
@@ -31,7 +30,6 @@ export class UserService extends BaseHttpService {
 
   private userCache = new Map<string, UserResponse>();
   private usersCache = new Map<string, UsersResponse>();
-  private rolesCache = new Map<string, RolesResponse>();
 
   authService = inject(AuthService);
   router = inject(Router);
@@ -70,17 +68,7 @@ export class UserService extends BaseHttpService {
       .pipe(tap((resp) => this.userCache.set(id, resp)));
   }
 
-  getRoles(): Observable<RolesResponse> {
-
-    if (this.rolesCache.has('roles')) {
-      return of(this.rolesCache.get('roles')!);
-    }
-
-    return this.http
-      .get<RolesResponse>(`${this.apiUrl}/roles`)
-      .pipe(tap((resp) => this.rolesCache.set('roles', resp)));
-
-  }
+  
 
   created(data: any): Observable<UserResponse> {
     return this.http

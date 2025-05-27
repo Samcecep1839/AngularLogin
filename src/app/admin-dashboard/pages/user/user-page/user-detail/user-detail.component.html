@@ -1,0 +1,116 @@
+<h1 class="-text-2xl font-bold font-montserrat text-secondary">
+  {{ user().first_name }} {{ user().last_name }}
+</h1>
+
+<div class="divider divider-secondary"></div>
+<form [formGroup]="userForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4" (ngSubmit)="onSubmit()">
+  <div class="flex flex-col gap-4">
+    <h2>Datos del Usuario</h2>
+    <label class="floating-label">
+      <span>First Name</span>
+      <input type="text" placeholder="first name" 
+      class="input input-md input-bordered w-full" 
+      formControlName="first_name"
+    />
+
+    </label>
+    
+     <label class="floating-label">
+      <span>Last Name</span>
+    <input type="text" placeholder="last_name" 
+    class="input input-md input-bordered w-full" 
+    formControlName="last_name"
+    />
+    </label>
+
+      <label class="floating-label">
+      <span>Email</span>
+    <input
+    type="email"
+    placeholder="email"
+    class="input input-md input-bordered w-full"
+    formControlName="email"
+    />
+    </label>
+
+  
+<label class="floating-label">
+      <span>telephone</span>
+    <input
+    type="text"
+    placeholder="telephone"
+    class="input input-md input-bordered w-full"
+    formControlName="telephone"
+    />
+  </label>
+
+  <label class="floating-label">
+      <span>password</span>
+    @if (user().id === "new") {
+    <input
+    type="text"
+    placeholder="password"
+    class="input input-md input-bordered w-full"
+    formControlName="password"
+    />
+    }
+</label>
+
+
+
+<label class="floating-label">
+      <span>Role</span>
+<div class="flex flex-col gap-2">
+ <select class="select select-bordered w-full" formControlName="role_id">
+    <option value="0">Selecciona un role</option>
+ @for (role of rolesResource.value()?.data?.roles; track role.id) {
+  <option [value]="role.id">{{ role.name }}</option>
+}
+</select>
+</div>
+</label>
+
+<div class="col-span-2 ">
+  <div class="flex justify-start h-12">
+    <button class="btn btn-secondary px-20 text-lg" type="submit">
+      <!-- <span class="loading loading-spinner loading-sm"></span> -->
+      Guardar
+    </button>
+  </div>
+</div>
+
+</div>
+
+<div class="flex flex-col gap-2 h-[500px]">
+  <div class="flex items-center justify-center">
+  @if (!previewIMG) {
+    <img
+    class="w-full object-contain animate-fadeIn h-[300px] mb-5"
+    [src]="user().id | userImage"
+    [alt]="user().avatar"
+    width="500"
+    height="500"
+    priority
+  />
+  }@else{
+    <img
+    class="w-full object-contain animate-fadeIn h-[300px] mb-5"
+    [src]="previewURl"
+    [alt]="user().avatar"
+    width="500"
+    height="500"
+    priority
+  /> 
+  }
+  </div>
+  <input type="file" 
+  accept="image/*"
+  class="file-input file-input-bordered w-full mt-4"
+  formControlName="avatar"
+  (change)="onFilesChange($event)"
+   />
+</div>  
+
+
+
+</form>

@@ -1,0 +1,62 @@
+<h1 class="-text-2xl font-bold font-montserrat text-secondary">
+    {{post().title}}
+</h1>
+
+<div class="divider divider-secondary"></div>
+<form [formGroup]="postForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4" (ngSubmit)="onSubmit()">     
+
+     <div class="flex flex-col gap-4">
+        <h2>Datos del Usuario</h2>
+        <label class="floating-label">
+            <span>Title</span>
+            <input type="text" placeholder="Title" class="input input-md input-bordered w-full"
+                formControlName="title" />
+
+        </label>
+        
+
+        <label class="floating-label">
+            <span>Content</span>
+            <textarea class="textarea" placeholder="Content" formControlName="content">
+      </textarea>
+        </label>
+        <label class="floating-label">
+            <span>Author</span>
+            <div class="flex flex-col gap-2">
+                <select class="select select-bordered w-full" formControlName="author_id">
+                    <option value="0">Selecciona un Author</option>
+                    @for (user of userResource.value()?.data?.users; track user.id) {
+                    <option [value]="user.id">
+                        {{user.first_name}} {{user.last_name}}
+                    </option>
+                    }
+                </select>
+            </div>
+        </label>
+
+        <div class="flex flex-col gap-2 h-[500px]">
+            <div class="flex items-center justify-center">
+                @if (!previewIMG) {
+                <img class="w-full object-contain animate-fadeIn h-[300px] mb-5" [src]="post().id | postImage"
+                    [alt]="post().image" width="500" height="500" priority />
+                }@else{
+                <img class="w-full object-contain animate-fadeIn h-[300px] mb-5" [src]="previewURl" [alt]="post().image"
+                    width="500" height="500" priority />
+                }
+            </div>
+            <input type="file" accept="image/*" class="file-input file-input-bordered w-full mt-4"
+                formControlName="postImage" (change)="onFilesChange($event)" />
+        </div>
+
+        <div class="col-span-2 ">
+            <div class="flex justify-start h-12">
+                <button class="btn btn-secondary px-20 text-lg" type="submit">
+                    <!-- <span class="loading loading-spinner loading-sm"></span> -->
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+</form>
+   

@@ -1,0 +1,68 @@
+<div class="max-w-2xl mx-auto p-4">
+    @if (postResource.hasValue()) {
+    <h1 class="text-5xl text-center mb-3 uppercase font-bold font-montserrat">{{postResource.value().data.title }}</h1>
+    @if (postResource.value().data.Author){
+    <a class="inline-flex items-center text-blue-600 hover:underline gap-2 mb-4" [routerLink]="['/posts']">
+        <i class="bi bi-arrow-left"></i>
+        return to post
+    </a>
+    <div class="flex items-center gap-4 mb-4">
+        <img [src]="postResource.value().data.Author.id | userImage" class="w-12 h-12 rounded-full" alt="Avatar" />
+        <div>
+            <h2 class="font-semibold text-lg">
+                {{ postResource.value().data.Author.first_name }}
+                {{ postResource.value().data.Author.last_name }}
+            </h2>
+            <p class="text-sm text-gray-500">
+                {{ postResource.value().data.createdAt | date: "short" }}
+            </p>
+        </div>
+    </div>
+
+    }
+
+    <div class="mb-4">
+        <img [src]="postResource.value().data.id | postImage" class="mt-2 rounded-xl w-full" alt="Post Image" />
+        <p class="text-base text-white my-4  break-words">
+            {{ postResource.value().data.content }}
+        </p>
+    </div>
+    }
+
+
+    <div class="flex items-center gap-6 mb-4">
+        <button class="flex items-center gap-2 text-gray-600 hover:text-blue-500">
+            <i class="lucide lucide-thumbs-up"></i>
+            <span>20</span>
+        </button>
+
+        <button class="flex items-center gap-2 text-gray-600 hover:text-red-500">
+            <i class="lucide lucide-heart"></i>
+            <span>10</span>
+        </button>
+
+        <button class="flex items-center gap-2 text-gray-600 hover:text-green-500">
+            <i class="lucide lucide-share-2"></i>
+            <span>Compartir</span>
+        </button>
+    </div>
+
+    <div class="mb-4">
+        <h3 class="font-semibold mb-2">Comentarios</h3>
+
+        <form class="flex items-center gap-2 mb-3">
+            <input name="comment" class="flex-1 border rounded-xl px-3 py-2" placeholder="Escribe un comentario..." />
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-xl" type="submit">
+                Enviar
+            </button>
+        </form>
+
+        <div class="border-b py-2">
+            <p class="text-sm font-semibold">author</p>
+            <p class="text-sm text-gray-700">Comentarios</p>
+            <p class="text-xs text-gray-400">
+                fecha
+            </p>
+        </div>
+    </div>
+</div>

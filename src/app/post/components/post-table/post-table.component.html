@@ -1,0 +1,53 @@
+Go to component
+<div class="overflow-x-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="w-24">#</th>
+                <th class="w-80">Author</th>
+                <th class="w-80">Title</th>
+                <th class="w-64">Publish Date</th>
+                <th class="w-64">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (post of posts(); track post.id; let i = $index) {
+            <tr>
+                <th>
+                    {{i + 1 + offset() }}
+                </th>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">
+                            <div class="mask mask-squircle h-12 w-12">
+                                <img src="http://localhost:3000/api/users/avatar/{{post.Author.id}}"
+                                    alt="Avatar Tailwind CSS Component" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold">
+                                {{post.Author.first_name}}
+                                {{post.Author.last_name}}
+                            </div>
+                            <div class="text-sm opacity-50">{{ post.Author.email }}</div>
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <h2 class="text-2xl">{{ post.title }}</h2>
+                </td>
+                <th>
+                <button class="btn btn-error btn-xs rounded-full py-4 me-3" (click)="emitDeleted(post.id)">
+                        <i class="bi bi-trash text-lg"></i>
+                    </button>
+                    <a class="btn btn-info btn-xs rounded-full py-4" 
+                    [routerLink]="['/dashboard/posts/', post.id]">
+                    <i class="bi bi-pencil-square text-lg"></i></a>
+               
+                </th>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

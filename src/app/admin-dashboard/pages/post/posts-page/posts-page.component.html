@@ -1,0 +1,56 @@
+<div class="mb-5">
+  <h1 class="text-2xl text-secondary">Lista de Posts</h1>
+</div>
+<div class=" divider divider-secondary"></div>
+
+<div class="flex w-full gap-2 items-center h-20 justify-between">
+  <label class="floating-label mb-10 mt-4">
+    <span>Items Per Page</span>
+    <select
+      class="select select-bordered w-32"
+      [value]="limit()"
+      (change)="setLimit(itemPP.value)"
+      #itemPP
+    >
+      <option>5</option>
+      <option>10</option>
+      <option>15</option>
+      <option>30</option>
+    </select>
+  </label>
+
+  <app-pagination
+    [pages]="PostResource.value()?.data?.totalPages ?? 0"
+    [currentPage]="paginationService.currentPage()"
+  ></app-pagination>
+
+  <button
+    class="btn btn-secondary mb-10 mt-4"
+    routerLink="/dashboard/posts/new"
+  >
+    <i class="bi bi-plus-circle"></i> New Post
+  </button>
+</div>
+@if (PostResource.isLoading()) {
+    <div class="flex justify-center items-center h-screen">
+        <span class="loading loading-spinner loading-lg"></span>
+    </div>
+}
+@if (PostResource.hasValue()) {
+  <post-table
+  [posts] = "PostResource.value().data.posts"
+  (deleted) = "deletedPost($event)"
+  [offset] = "(paginationService.currentPage() - 1) * limit()"
+  >
+
+  </post-table>
+} @else {
+    <div class="flex justify-center items-center h-screen">
+        <h2 class="text-2xl">Lista no tiene datos para mostrar</h2>
+    </div>
+}
+
+<app-pagination
+    [pages]="PostResource.value()?.data?.totalPages ?? 0"
+    [currentPage]="paginationService.currentPage()"
+></app-pagination>
